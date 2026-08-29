@@ -11,6 +11,7 @@ All notable changes to SafeGuard Sentinel are documented here.
 - Evidence access logs record object references instead of credential-bearing
   pre-signed URLs.
 - The supported toolchain is Node.js 24 with current Vite and Vitest releases.
+- React Router is updated to the patched 7.18 line.
 - CI actions are pinned to immutable revisions, and public-repository security
   workflows are prepared for CodeQL and dependency review.
 
