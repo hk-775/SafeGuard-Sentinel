@@ -1,0 +1,156 @@
+<mxfile host="drawio-jsapi" modified="2026-04-06T20:17:38.668Z" agent="DrawioJSAPI/1.0.0" version="1.0.0">
+  <diagram id="diagram-1" name="SafeGuard Sentinel - AWS Architecture"><mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" adaptiveColors="auto">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="title" value="SafeGuard Sentinel — Reference Architecture" style="text;html=1;align=center;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0F3D3E;" vertex="1" parent="1">
+      <mxGeometry x="40" y="20" width="1680" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="subtitle" value="Privacy-preserving event analysis with human authority over consequential actions" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontColor=#496566;" vertex="1" parent="1">
+      <mxGeometry x="40" y="60" width="1680" height="30" as="geometry"/>
+    </mxCell>
+    <mxCell id="sources" value="Adopter Platform" style="swimlane;startSize=30;container=1;pointerEvents=0;rounded=1;fillColor=#E8F5F4;strokeColor=#0E9384;fontColor=#0F3D3E;fontStyle=1;html=1;" vertex="1" parent="1">
+      <mxGeometry x="30" y="150" width="190" height="520" as="geometry"/>
+    </mxCell>
+    <mxCell id="activity-events" value="Activity Events&#xa;Opaque IDs only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F3D3E;" vertex="1" parent="sources">
+      <mxGeometry x="25" y="55" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="safety-requests" value="Safety Session&#xa;Requests" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F3D3E;" vertex="1" parent="sources">
+      <mxGeometry x="25" y="180" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="incident-reports" value="Incident Reports" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F3D3E;" vertex="1" parent="sources">
+      <mxGeometry x="25" y="305" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="platform-controls" value="Temporary Controls&#xa;&amp; User Notices" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#C77700;fontColor=#5F3B00;" vertex="1" parent="sources">
+      <mxGeometry x="25" y="430" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="aws-cloud" value="AWS Cloud" style="swimlane;startSize=34;container=1;pointerEvents=0;rounded=1;fillColor=#FAFBFC;strokeColor=#232F3E;fontColor=#232F3E;fontStyle=1;fontSize=14;html=1;" vertex="1" parent="1">
+      <mxGeometry x="260" y="105" width="1460" height="840" as="geometry"/>
+    </mxCell>
+    <mxCell id="ingestion-group" value="Event Intake" style="swimlane;startSize=28;container=1;pointerEvents=0;rounded=1;fillColor=#F1ECFF;strokeColor=#8C4FFF;fontColor=#3F226F;fontStyle=1;html=1;" vertex="1" parent="aws-cloud">
+      <mxGeometry x="20" y="50" width="245" height="700" as="geometry"/>
+    </mxCell>
+    <mxCell id="api-gateway" value="API Gateway" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;" vertex="1" parent="ingestion-group">
+      <mxGeometry x="82" y="55" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="kinesis" value="Kinesis Data&#xa;Streams" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#945DF2;gradientDirection=north;fillColor=#5A30B5;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.kinesis;" vertex="1" parent="ingestion-group">
+      <mxGeometry x="82" y="205" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="ingestion-lambda" value="Ingestion&#xa;Lambda" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.lambda_function;" vertex="1" parent="ingestion-group">
+      <mxGeometry x="82" y="355" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="eventbridge" value="EventBridge&#xa;Signal Bus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8DEFF;strokeColor=#8C4FFF;fontColor=#3F226F;fontStyle=1;" vertex="1" parent="ingestion-group">
+      <mxGeometry x="50" y="530" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="analysis-group" value="Signal Analysis &amp; Fusion" style="swimlane;startSize=28;container=1;pointerEvents=0;rounded=1;fillColor=#FFF4E5;strokeColor=#ED7100;fontColor=#6A3300;fontStyle=1;html=1;" vertex="1" parent="aws-cloud">
+      <mxGeometry x="285" y="50" width="430" height="700" as="geometry"/>
+    </mxCell>
+    <mxCell id="visual-analyzer" value="Visual Analyzer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#ED7100;fontColor=#4B2B00;" vertex="1" parent="analysis-group">
+      <mxGeometry x="25" y="65" width="140" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="textual-analyzer" value="Textual Analyzer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#ED7100;fontColor=#4B2B00;" vertex="1" parent="analysis-group">
+      <mxGeometry x="25" y="180" width="140" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="behavioral-analyzer" value="Behavioral Analyzer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#ED7100;fontColor=#4B2B00;" vertex="1" parent="analysis-group">
+      <mxGeometry x="25" y="295" width="140" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="temporal-analyzer" value="Temporal Analyzer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#ED7100;fontColor=#4B2B00;" vertex="1" parent="analysis-group">
+      <mxGeometry x="25" y="410" width="140" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="rekognition" value="Rekognition&#xa;Optional" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rekognition_2;" vertex="1" parent="analysis-group">
+      <mxGeometry x="220" y="50" width="70" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="comprehend" value="Comprehend&#xa;Optional" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.comprehend;" vertex="1" parent="analysis-group">
+      <mxGeometry x="220" y="175" width="70" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="bedrock" value="Bedrock&#xa;Optional" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock;" vertex="1" parent="analysis-group">
+      <mxGeometry x="220" y="300" width="70" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="fusion-lambda" value="Threat Fusion&#xa;Lambda" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.lambda_function;" vertex="1" parent="analysis-group">
+      <mxGeometry x="220" y="505" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="analysis-note" value="Analyzers emit scores and redacted evidence references — not raw PII." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9F0;strokeColor=#D7A35D;fontColor=#6A4A1F;fontSize=11;" vertex="1" parent="analysis-group">
+      <mxGeometry x="25" y="600" width="355" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="data-group" value="State, Evidence &amp; Audit" style="swimlane;startSize=28;container=1;pointerEvents=0;rounded=1;fillColor=#EAF2FF;strokeColor=#3B82F6;fontColor=#173D73;fontStyle=1;html=1;" vertex="1" parent="aws-cloud">
+      <mxGeometry x="735" y="50" width="300" height="700" as="geometry"/>
+    </mxCell>
+    <mxCell id="dynamodb" value="DynamoDB&#xa;Scores &amp; Sessions" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;" vertex="1" parent="data-group">
+      <mxGeometry x="35" y="60" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="neptune" value="Neptune&#xa;Relationship Graph" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#4D72F3;gradientDirection=north;fillColor=#3334B9;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.neptune;" vertex="1" parent="data-group">
+      <mxGeometry x="180" y="60" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="s3" value="S3 Object Lock&#xa;Evidence References" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="data-group">
+      <mxGeometry x="35" y="250" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="opensearch" value="OpenSearch&#xa;Audit Index" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticsearch_service;" vertex="1" parent="data-group">
+      <mxGeometry x="180" y="250" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="cloudwatch" value="CloudWatch&#xa;Metrics, Logs &amp; Alarms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FF;strokeColor=#9333EA;fontColor=#5B217B;fontStyle=1;" vertex="1" parent="data-group">
+      <mxGeometry x="80" y="455" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="retention-note" value="Adopter-defined retention, encryption, access controls, and regional boundaries." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7FAFF;strokeColor=#7AA2D8;fontColor=#35577F;fontSize=11;" vertex="1" parent="data-group">
+      <mxGeometry x="30" y="590" width="240" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="response-group" value="Decision, Response &amp; Oversight" style="swimlane;startSize=28;container=1;pointerEvents=0;rounded=1;fillColor=#ECFDF5;strokeColor=#0E9384;fontColor=#0F5132;fontStyle=1;html=1;" vertex="1" parent="aws-cloud">
+      <mxGeometry x="1055" y="50" width="375" height="700" as="geometry"/>
+    </mxCell>
+    <mxCell id="step-functions" value="Step Functions&#xa;Response Workflow" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.step_functions;" vertex="1" parent="response-group">
+      <mxGeometry x="45" y="55" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="human-gate" value="Human Approval&#xa;Required?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF4CC;strokeColor=#C99A00;fontColor=#5C4600;fontStyle=1;" vertex="1" parent="response-group">
+      <mxGeometry x="205" y="55" width="140" height="90" as="geometry"/>
+    </mxCell>
+    <mxCell id="response-lambda" value="Response&#xa;Orchestrator" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.lambda_function;" vertex="1" parent="response-group">
+      <mxGeometry x="45" y="245" width="78" height="78" as="geometry"/>
+    </mxCell>
+    <mxCell id="notification" value="Notifications &amp;&#xa;Temporary Controls" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F5132;" vertex="1" parent="response-group">
+      <mxGeometry x="205" y="245" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="review-queue" value="Analyst Review&#xa;&amp; Appeals Queue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F5132;" vertex="1" parent="response-group">
+      <mxGeometry x="35" y="430" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="dashboard" value="Operations&#xa;Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0E9384;fontColor=#0F5132;" vertex="1" parent="response-group">
+      <mxGeometry x="205" y="430" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="authority-note" value="Automated output is advisory. Adopters define policy, due process, and human decision authority." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#52B7A8;fontColor=#255B53;fontSize=11;" vertex="1" parent="response-group">
+      <mxGeometry x="35" y="590" width="310" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="security-note" value="Cross-cutting controls: least-privilege IAM • KMS encryption • secrets isolation • audit logging • alarms • data minimization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontColor=#FFFFFF;fontSize=12;fontStyle=1;" vertex="1" parent="aws-cloud">
+      <mxGeometry x="20" y="775" width="1410" height="45" as="geometry"/>
+    </mxCell>
+    <mxCell id="e1" value="events" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5A30B5;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="activity-events" target="kinesis"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e2" value="requests" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5A30B5;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="safety-requests" target="api-gateway"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e3" value="reports" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#5A30B5;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="incident-reports" target="api-gateway"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8C4FFF;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="api-gateway" target="ingestion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8C4FFF;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="kinesis" target="ingestion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e6" value="validated" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8C4FFF;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="ingestion-lambda" target="eventbridge"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="eventbridge" target="visual-analyzer"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="eventbridge" target="textual-analyzer"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="eventbridge" target="behavioral-analyzer"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="eventbridge" target="temporal-analyzer"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e11" value="optional" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#01A88D;dashed=1;endArrow=classic;" edge="1" parent="1" source="visual-analyzer" target="rekognition"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e12" value="optional" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#01A88D;dashed=1;endArrow=classic;" edge="1" parent="1" source="textual-analyzer" target="comprehend"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e13" value="optional" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#01A88D;dashed=1;endArrow=classic;" edge="1" parent="1" source="behavioral-analyzer" target="bedrock"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e14" value="scores" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="visual-analyzer" target="fusion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="textual-analyzer" target="fusion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="behavioral-analyzer" target="fusion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#ED7100;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="temporal-analyzer" target="fusion-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e18" value="state" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#3B82F6;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="fusion-lambda" target="dynamodb"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e19" value="relationships" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#3B82F6;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="fusion-lambda" target="neptune"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e20" value="risk event" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0E9384;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="fusion-lambda" target="step-functions"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e21" value="policy" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0E9384;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="step-functions" target="human-gate"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e22" value="approved" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0E9384;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="human-gate" target="response-lambda"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e23" value="review" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#C99A00;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="human-gate" target="review-queue"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e24" value="execute" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0E9384;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="response-lambda" target="notification"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e25" value="bounded action" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#C77700;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="notification" target="platform-controls"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e26" value="evidence ref" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#277116;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="response-lambda" target="s3"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e27" value="audit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#8C4FFF;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="response-lambda" target="opensearch"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e28" value="appeal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0E9384;strokeWidth=2;endArrow=classic;" edge="1" parent="1" source="review-queue" target="human-gate"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e29" value="read-only views" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#3B82F6;dashed=1;endArrow=classic;" edge="1" parent="1" source="dynamodb" target="dashboard"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e30" value="telemetry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9333EA;dashed=1;endArrow=classic;" edge="1" parent="1" source="eventbridge" target="cloudwatch"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e31" value="telemetry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#9333EA;dashed=1;endArrow=classic;" edge="1" parent="1" source="step-functions" target="cloudwatch"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel></diagram>
+</mxfile>

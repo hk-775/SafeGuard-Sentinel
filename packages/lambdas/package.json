@@ -1,0 +1,19 @@
+{
+  "name": "@safeguard-sentinel/lambdas",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT-0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "test": "vitest --run",
+    "clean": "tsc --build --clean"
+  },
+  "dependencies": {
+    "@safeguard-sentinel/shared": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
+}

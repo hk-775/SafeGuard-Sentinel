@@ -1,0 +1,13 @@
+{
+  "name": "@safeguard-sentinel/shared",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT-0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "test": "vitest --run",
+    "clean": "tsc --build --clean"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "safeguard-sentinel",
+  "version": "0.1.0",
+  "description": "Privacy-preserving trust and safety reference implementation for AWS",
+  "private": true,
+  "license": "MIT-0",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:core && npm run build:dashboard",
+    "build:core": "tsc --build",
+    "build:dashboard": "npm run build --workspace @safeguard-sentinel/dashboard",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "privacy:check": "node scripts/privacy-check.mjs",
+    "verify": "npm run privacy:check && npm run build && npm test",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "fast-check": "^3.22.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
