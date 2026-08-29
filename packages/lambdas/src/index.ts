@@ -98,6 +98,7 @@ export { notifyUser, buildNotificationMessage, isNotificationSafe } from './inte
 export type {
   ThreatEvent,
   InterventionResult,
+  InterventionApprovalStatus,
   SafetyPromptService,
   FrictionService,
   AccountSuspensionService,
@@ -105,6 +106,7 @@ export type {
   NotificationService,
   EvidenceService,
   EscalationQueueService,
+  HumanApprovalGateService,
   AuditLogService,
   InterventionDeps,
 } from './intervention/types';

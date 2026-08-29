@@ -4,8 +4,25 @@
   "description": "Privacy-preserving trust and safety reference implementation for AWS",
   "private": true,
   "license": "MIT-0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk-775/SafeGuard-Sentinel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hk-775/SafeGuard-Sentinel/issues"
+  },
+  "homepage": "https://github.com/hk-775/SafeGuard-Sentinel#readme",
+  "keywords": [
+    "aws",
+    "serverless",
+    "trust-and-safety",
+    "privacy",
+    "reference-implementation"
+  ],
+  "packageManager": "npm@11.19.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=24 <25",
+    "npm": ">=11"
   },
   "workspaces": [
     "packages/*"
@@ -16,13 +33,14 @@
     "build:dashboard": "npm run build --workspace @safeguard-sentinel/dashboard",
     "test": "vitest --run",
     "test:watch": "vitest",
+    "license:check": "node scripts/license-check.mjs",
     "privacy:check": "node scripts/privacy-check.mjs",
-    "verify": "npm run privacy:check && npm run build && npm test",
+    "verify": "npm run privacy:check && npm run license:check && npm run build && npm test",
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
     "fast-check": "^3.22.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0"
+    "vitest": "^4.1.11"
   }
 }

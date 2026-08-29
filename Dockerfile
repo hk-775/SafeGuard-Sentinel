@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:20-alpine AS build
+FROM node:24.20.0-alpine AS build
 WORKDIR /app
 
 # Copy root workspace config
@@ -23,7 +23,7 @@ COPY packages/dashboard/server.js packages/dashboard/
 COPY packages/lambdas/package.json packages/lambdas/
 
 # Install all workspace dependencies
-RUN npm ci --ignore-scripts
+RUN npm ci --ignore-scripts --no-audit
 
 # Build shared package first
 RUN cd packages/shared && npx tsc --build
@@ -32,12 +32,14 @@ RUN cd packages/shared && npx tsc --build
 RUN cd packages/dashboard && npx vite build
 
 # Stage 2: Serve
-FROM node:20-alpine
+FROM node:24.20.0-alpine
 WORKDIR /app
 
-COPY --from=build /app/packages/dashboard/dist ./dist
-COPY --from=build /app/packages/dashboard/server.js ./server.js
+COPY --chown=node:node --from=build /app/packages/dashboard/dist ./dist
+COPY --chown=node:node --from=build /app/packages/dashboard/server.js ./server.js
 
 ENV HOST=0.0.0.0
+ENV NODE_ENV=production
 EXPOSE 8080
+USER node
 CMD ["node", "server.js"]

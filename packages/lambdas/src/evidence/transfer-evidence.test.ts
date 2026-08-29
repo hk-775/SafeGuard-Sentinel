@@ -50,10 +50,20 @@ describe('transferEvidence', () => {
       packageId: 'pkg-001',
       requestedBy: 'officer-smith',
       purpose: 'investigation-42',
-      presignedUrl: 'https://s3.example.com/presigned-url',
+      objectKey: 'evidence/pkg-001.json',
       expiresAt: '2024-06-15T11:00:00.000Z',
       timestamp: '2024-06-15T10:00:00.000Z',
     });
+  });
+
+  it('should never write the credential-bearing pre-signed URL to the access log', async () => {
+    const deps = makeDeps();
+
+    await transferEvidence('pkg-001', 'officer-smith', 'investigation-42', deps);
+
+    expect(deps.accessLog.logAccess).not.toHaveBeenCalledWith(
+      expect.objectContaining({ presignedUrl: expect.any(String) }),
+    );
   });
 
   it('should return presignedUrl and expiresAt matching expected values', async () => {

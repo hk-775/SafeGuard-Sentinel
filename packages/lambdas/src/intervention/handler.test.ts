@@ -31,6 +31,7 @@ function makeDeps(): InterventionDeps {
     notification: { notifyUser: vi.fn().mockResolvedValue(undefined) },
     evidence: { assembleEvidencePackage: vi.fn().mockResolvedValue(undefined) },
     escalationQueue: { enqueue: vi.fn().mockResolvedValue(undefined) },
+    approvalGate: { verifyApproval: vi.fn().mockResolvedValue(true) },
     auditLog: { logIntervention: vi.fn().mockResolvedValue(undefined) },
   };
 }
@@ -106,6 +107,7 @@ describe('executeIntervention', () => {
     expect(result.interventionLevel).toBe(InterventionLevel.None);
     expect(result.interventionType).toBeNull();
     expect(result.executed).toBe(false);
+    expect(result.approvalStatus).toBe('not_required');
     expect(deps.auditLog.logIntervention).toHaveBeenCalledTimes(1);
   });
 
@@ -119,6 +121,7 @@ describe('executeIntervention', () => {
     expect(result.interventionLevel).toBe(InterventionLevel.SafetyPrompt);
     expect(result.interventionType).toBe(InterventionType.SafetyPrompt);
     expect(result.executed).toBe(true);
+    expect(result.approvalStatus).toBe('not_required');
     expect(deps.safetyPrompt.injectPrompt).toHaveBeenCalledWith('user-1', 'session-1', ['coercion']);
     expect(deps.notification.notifyUser).toHaveBeenCalledWith(
       'user-1',
@@ -143,16 +146,29 @@ describe('executeIntervention', () => {
     );
   });
 
-  it('executes Level 3 InteractionRestriction for score in [88, 94)', async () => {
+  it('executes Level 3 InteractionRestriction only after verified approval', async () => {
     const deps = makeDeps();
     const result = await executeIntervention(
-      makeThreatEvent({ compositeScore: 90, correlatedAccounts: ['acc-2'] }),
+      makeThreatEvent({
+        compositeScore: 90,
+        correlatedAccounts: ['acc-2'],
+        approvalReference: 'APPROVAL-DEMO-1',
+      }),
       deps,
     );
 
     expect(result.interventionLevel).toBe(InterventionLevel.InteractionRestriction);
     expect(result.interventionType).toBe(InterventionType.InteractionRestriction);
     expect(result.executed).toBe(true);
+    expect(result.approvalStatus).toBe('verified');
+    expect(deps.approvalGate.verifyApproval).toHaveBeenCalledWith({
+      approvalReference: 'APPROVAL-DEMO-1',
+      sessionId: 'session-1',
+      userId: 'user-1',
+      interventionLevel: InterventionLevel.InteractionRestriction,
+      interventionType: InterventionType.InteractionRestriction,
+      targetAccountIds: ['user-1'],
+    });
     expect(deps.accountSuspension.suspendAccount).toHaveBeenCalledWith('user-1', 'session-1');
     expect(deps.evidence.assembleEvidencePackage).toHaveBeenCalledWith('session-1', 'user-1', ['acc-2']);
     expect(deps.escalationQueue.enqueue).toHaveBeenCalledWith('session-1', 'user-1', 'interaction_restriction');
@@ -163,17 +179,22 @@ describe('executeIntervention', () => {
     );
   });
 
-  it('executes Level 4 NetworkDisruption for score >= 94 with 3+ accounts', async () => {
+  it('executes Level 4 NetworkDisruption only after verified approval', async () => {
     const deps = makeDeps();
     const correlatedAccounts = ['acc-2', 'acc-3', 'acc-4'];
     const result = await executeIntervention(
-      makeThreatEvent({ compositeScore: 96, correlatedAccounts }),
+      makeThreatEvent({
+        compositeScore: 96,
+        correlatedAccounts,
+        approvalReference: 'APPROVAL-DEMO-2',
+      }),
       deps,
     );
 
     expect(result.interventionLevel).toBe(InterventionLevel.NetworkDisruption);
     expect(result.interventionType).toBe(InterventionType.NetworkDisruption);
     expect(result.executed).toBe(true);
+    expect(result.approvalStatus).toBe('verified');
     expect(deps.networkDisruption.disruptNetwork).toHaveBeenCalledWith([
       'user-1',
       'acc-2',
@@ -191,12 +212,21 @@ describe('executeIntervention', () => {
       InterventionType.NetworkDisruption,
       'network_disabled',
     );
+    expect(deps.approvalGate.verifyApproval).toHaveBeenCalledWith(
+      expect.objectContaining({
+        targetAccountIds: ['user-1', 'acc-2', 'acc-3', 'acc-4'],
+      }),
+    );
   });
 
   it('falls back to Level 3 for score >= 94 with < 3 correlated accounts', async () => {
     const deps = makeDeps();
     const result = await executeIntervention(
-      makeThreatEvent({ compositeScore: 96, correlatedAccounts: ['acc-2'] }),
+      makeThreatEvent({
+        compositeScore: 96,
+        correlatedAccounts: ['acc-2'],
+        approvalReference: 'APPROVAL-DEMO-3',
+      }),
       deps,
     );
 
@@ -205,6 +235,69 @@ describe('executeIntervention', () => {
     expect(result.executed).toBe(true);
     expect(deps.accountSuspension.suspendAccount).toHaveBeenCalled();
     expect(deps.networkDisruption.disruptNetwork).not.toHaveBeenCalled();
+  });
+
+  it('deduplicates correlated accounts before selecting or authorizing an action', async () => {
+    const deps = makeDeps();
+    const result = await executeIntervention(
+      makeThreatEvent({
+        compositeScore: 96,
+        correlatedAccounts: ['user-1', 'acc-2', 'acc-2', 'acc-2'],
+        approvalReference: 'APPROVAL-DEMO-DEDUPED',
+      }),
+      deps,
+    );
+
+    expect(result.interventionLevel).toBe(InterventionLevel.InteractionRestriction);
+    expect(deps.networkDisruption.disruptNetwork).not.toHaveBeenCalled();
+    expect(deps.accountSuspension.suspendAccount).toHaveBeenCalled();
+    expect(deps.evidence.assembleEvidencePackage).toHaveBeenCalledWith(
+      'session-1',
+      'user-1',
+      ['acc-2'],
+    );
+    expect(deps.approvalGate.verifyApproval).toHaveBeenCalledWith(
+      expect.objectContaining({ targetAccountIds: ['user-1'] }),
+    );
+  });
+
+  it('queues Level 3 for review but does not restrict an account without approval', async () => {
+    const deps = makeDeps();
+    const result = await executeIntervention(
+      makeThreatEvent({ compositeScore: 90, correlatedAccounts: ['acc-2'] }),
+      deps,
+    );
+
+    expect(result.executed).toBe(false);
+    expect(result.approvalStatus).toBe('required');
+    expect(deps.evidence.assembleEvidencePackage).toHaveBeenCalled();
+    expect(deps.escalationQueue.enqueue).toHaveBeenCalledWith(
+      'session-1',
+      'user-1',
+      'interaction_restriction',
+    );
+    expect(deps.approvalGate.verifyApproval).not.toHaveBeenCalled();
+    expect(deps.accountSuspension.suspendAccount).not.toHaveBeenCalled();
+    expect(deps.notification.notifyUser).not.toHaveBeenCalled();
+  });
+
+  it('fails closed when an approval reference cannot be verified', async () => {
+    const deps = makeDeps();
+    vi.mocked(deps.approvalGate.verifyApproval).mockResolvedValue(false);
+
+    const result = await executeIntervention(
+      makeThreatEvent({
+        compositeScore: 96,
+        correlatedAccounts: ['acc-2', 'acc-3', 'acc-4'],
+        approvalReference: 'APPROVAL-DEMO-INVALID',
+      }),
+      deps,
+    );
+
+    expect(result.executed).toBe(false);
+    expect(result.approvalStatus).toBe('required');
+    expect(deps.networkDisruption.disruptNetwork).not.toHaveBeenCalled();
+    expect(deps.notification.notifyUser).not.toHaveBeenCalled();
   });
 
   it('always logs the intervention to the audit log', async () => {
@@ -218,6 +311,8 @@ describe('executeIntervention', () => {
         interventionLevel: InterventionLevel.Friction,
         interventionType: InterventionType.Friction,
         compositeScore: 80,
+        executed: true,
+        approvalStatus: 'not_required',
       }),
     );
   });
@@ -256,6 +351,7 @@ describe('executeIntervention', () => {
     expect(deps.notification.notifyUser).not.toHaveBeenCalled();
     expect(deps.evidence.assembleEvidencePackage).not.toHaveBeenCalled();
     expect(deps.escalationQueue.enqueue).not.toHaveBeenCalled();
+    expect(deps.approvalGate.verifyApproval).not.toHaveBeenCalled();
   });
 
   it('returns correct sessionId and userId in result', async () => {

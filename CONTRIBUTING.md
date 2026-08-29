@@ -6,7 +6,8 @@ synthetic-only boundary.
 ## Development
 
 ```bash
-npm ci
+nvm use
+npm ci --ignore-scripts --no-audit
 npm run verify
 ```
 
@@ -22,6 +23,8 @@ npm run verify
 - Update `docs/architecture/safeguard-sentinel.drawio` and commit matching SVG
   and PNG exports whenever the architecture changes.
 - Run a secret scanner in addition to `npm run verify`.
+- Keep GitHub Actions pinned to immutable commit SHAs with a release comment.
+- Update `CHANGELOG.md` for user-visible or security-relevant behavior.
 
 Security-sensitive reports belong in the private process described in
 [SECURITY.md](SECURITY.md).

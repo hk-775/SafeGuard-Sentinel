@@ -9,7 +9,7 @@ control of consequential actions.
 > **Public beta:** this repository is a reference implementation, not a
 > production deployment, safety certification, or substitute for legal,
 > privacy, security, and policy review. The bundled dashboard uses synthetic
-> fixtures only.
+> fixtures only. See [BETA.md](BETA.md) for the explicit adoption gates.
 
 ![SafeGuard Sentinel reference architecture](docs/architecture/safeguard-sentinel.png)
 
@@ -42,9 +42,11 @@ The architecture diagram describes the intended AWS deployment boundary.
   logging, retention controls, and data minimization
 
 Low-impact prompts and temporary friction are represented as automated
-examples. Before connecting any adapter that restricts an account or affects
-multiple accounts, adopters must add an independently authorized human-review
-gate and their own due-process policy.
+examples. Level 3 and Level 4 handlers fail closed: they preserve evidence and
+queue a review, but do not execute unless an injected approval service verifies
+an opaque decision reference bound to the proposed action. Adopters must still
+implement the independent authorization system and their own due-process
+policy.
 
 ## Privacy boundary
 
@@ -65,13 +67,13 @@ See [PRIVACY.md](PRIVACY.md) for the contribution and runtime data rules.
 
 ### Prerequisites
 
-- Node.js 20 or later
-- npm 9 or later
+- Node.js 24.20.0
+- npm 11 or later
 
 ### Install and verify
 
 ```bash
-npm ci
+npm ci --ignore-scripts --no-audit
 npm run verify
 ```
 
@@ -105,7 +107,11 @@ scripts/        Release and privacy checks
 ## Security and contributions
 
 Please read [SECURITY.md](SECURITY.md) before reporting a vulnerability and
-[CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+[CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Project
+expectations and boundaries are documented in [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md),
+[GOVERNANCE.md](GOVERNANCE.md), and [SUPPORT.md](SUPPORT.md).
+
+Maintainers should follow [the release and publication checklist](docs/releasing.md).
 
 ## License
 

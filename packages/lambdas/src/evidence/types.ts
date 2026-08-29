@@ -92,7 +92,7 @@ export interface AccessLogClient {
     packageId: string;
     requestedBy: string;
     purpose: string;
-    presignedUrl: string;
+    objectKey: string;
     expiresAt: string;
     timestamp: string;
   }): Promise<void>;

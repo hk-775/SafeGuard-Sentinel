@@ -29,7 +29,7 @@ export async function transferEvidence(
     packageId,
     requestedBy,
     purpose,
-    presignedUrl,
+    objectKey: key,
     expiresAt,
     timestamp: now.toISOString(),
   });

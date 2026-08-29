@@ -20,7 +20,14 @@ export interface ThreatEvent {
   correlatedAccounts: string[];
   /** Dominant threat signals used for prompt selection. */
   threatSignals: string[];
+  /**
+   * Opaque reference to a separately recorded human approval decision.
+   * Required for Level 3 and Level 4 execution.
+   */
+  approvalReference?: string;
 }
+
+export type InterventionApprovalStatus = 'not_required' | 'required' | 'verified';
 
 /** Result returned by the intervention handler. */
 export interface InterventionResult {
@@ -29,6 +36,7 @@ export interface InterventionResult {
   sessionId: string;
   userId: string;
   executed: boolean;
+  approvalStatus: InterventionApprovalStatus;
 }
 
 // ---------------------------------------------------------------------------
@@ -70,6 +78,18 @@ export interface EscalationQueueService {
   enqueue(sessionId: string, userId: string, reason: string): Promise<void>;
 }
 
+/** Verifies that an independent human approval is valid and bound to this action. */
+export interface HumanApprovalGateService {
+  verifyApproval(params: {
+    approvalReference: string;
+    sessionId: string;
+    userId: string;
+    interventionLevel: InterventionLevel;
+    interventionType: InterventionType;
+    targetAccountIds: string[];
+  }): Promise<boolean>;
+}
+
 /** Logs every intervention for audit purposes. */
 export interface AuditLogService {
   logIntervention(entry: {
@@ -82,6 +102,8 @@ export interface AuditLogService {
     textualScore: number;
     behavioralScore: number;
     temporalScore: number;
+    executed: boolean;
+    approvalStatus: InterventionApprovalStatus;
   }): Promise<void>;
 }
 
@@ -98,5 +120,6 @@ export interface InterventionDeps {
   notification: NotificationService;
   evidence: EvidenceService;
   escalationQueue: EscalationQueueService;
+  approvalGate: HumanApprovalGateService;
   auditLog: AuditLogService;
 }

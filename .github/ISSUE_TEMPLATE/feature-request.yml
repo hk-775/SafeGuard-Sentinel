@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a focused, safety-conscious improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or maintainer problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Describe the behavior, interfaces, and alternatives considered.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Privacy, safety, and operational impact
+      description: Explain data handling, human-oversight, abuse, and deployment implications.
+    validations:
+      required: true
