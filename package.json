@@ -39,8 +39,8 @@
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
-    "fast-check": "^3.22.0",
-    "typescript": "^5.6.0",
+    "fast-check": "^4.9.0",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.11"
   }
 }
