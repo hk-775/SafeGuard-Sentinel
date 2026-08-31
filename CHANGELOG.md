@@ -14,11 +14,12 @@ All notable changes to SafeGuard Sentinel are documented here.
 - React Router is updated to the patched 7.18 line.
 - CI actions are pinned to immutable revisions, and public-repository security
   workflows are prepared for CodeQL and dependency review.
+- Automated dependency-update pull requests are disabled; vulnerability alerts
+  remain enabled, and maintainers apply reviewed dependency updates manually.
 
 ### Added
 
-- Community health files, release guidance, dependency license checks, and
-  Dependabot configuration.
+- Community health files, release guidance, and dependency license checks.
 
 ## 0.1.0
 
