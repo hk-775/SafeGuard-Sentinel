@@ -17,15 +17,18 @@ import { SystemHealthPage } from './pages/SystemHealthPage';
 
 import { OnePagerPage } from './pages/OnePagerPage';
 import { ArchitecturePage } from './pages/ArchitecturePage';
+import { IS_PUBLIC_SITE } from './lib/publicSite';
 
 const WS_URL = import.meta.env.VITE_WS_URL ?? 'ws://localhost:3001';
 
 const AppShellLayout: React.FC<{ status: 'connected' | 'disconnected' | 'reconnecting'; tourActive: boolean; onStartTour: () => void }> = ({ status, tourActive, onStartTour }) => {
-  const connectionData = computeConnectionStatus(status);
+  const connectionData = IS_PUBLIC_SITE
+    ? { label: 'Synthetic Demo', colorCode: 'green' as const }
+    : computeConnectionStatus(status);
   const location = useLocation();
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-testid="canonical-dashboard-shell">
       <header className="app-header" role="banner">
         <div className="header-brand">
           <span className="header-logo" aria-hidden="true">🛡️</span>
@@ -35,6 +38,7 @@ const AppShellLayout: React.FC<{ status: 'connected' | 'disconnected' | 'reconne
           {!tourActive && (
             <button
               onClick={onStartTour}
+              data-testid="guided-demo-button"
               style={{
                 background: 'rgba(255,255,255,0.15)',
                 border: '1px solid rgba(255,255,255,0.25)',
@@ -84,7 +88,10 @@ const AppShellLayout: React.FC<{ status: 'connected' | 'disconnected' | 'reconne
 };
 
 export const App: React.FC = () => {
-  const { status, subscribe } = useWebSocket({ url: WS_URL });
+  const { status, subscribe } = useWebSocket({
+    url: WS_URL,
+    disabled: IS_PUBLIC_SITE,
+  });
   const [tourActive, setTourActive] = useState(false);
 
   const noopSubscribe = useCallback((_handler: (event: DashboardEvent) => void) => {

@@ -8,6 +8,12 @@ export function useWebSocket(config: WebSocketManagerConfig) {
   const [status, setStatus] = useState<'connected' | 'disconnected' | 'reconnecting'>('disconnected');
 
   useEffect(() => {
+    if (config.disabled) {
+      managerRef.current = null;
+      setStatus('disconnected');
+      return undefined;
+    }
+
     const manager = createWebSocketManager(config);
     managerRef.current = manager;
     manager.connect();
@@ -21,7 +27,7 @@ export function useWebSocket(config: WebSocketManagerConfig) {
       manager.disconnect();
       managerRef.current = null;
     };
-  }, [config.url]);
+  }, [config.disabled, config.url]);
 
   const subscribe = useCallback((handler: (event: DashboardEvent) => void) => {
     if (managerRef.current) {

@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:public": "node scripts/test-public-site.mjs"
   },
   "dependencies": {
     "@safeguard-sentinel/shared": "0.1.0",
