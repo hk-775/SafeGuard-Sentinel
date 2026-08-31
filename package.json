@@ -35,11 +35,14 @@
     "test:watch": "vitest",
     "license:check": "node scripts/license-check.mjs",
     "privacy:check": "node scripts/privacy-check.mjs",
-    "verify": "npm run privacy:check && npm run license:check && npm run build && npm test",
+    "react:check": "node scripts/react-runtime-check.mjs",
+    "verify": "npm run privacy:check && npm run license:check && npm run react:check && npm run build && npm test",
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
     "fast-check": "^3.22.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "typescript": "^5.6.0",
     "vitest": "^4.1.11"
   }

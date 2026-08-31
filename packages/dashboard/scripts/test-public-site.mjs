@@ -346,6 +346,7 @@ let cdp;
 const browserExceptions = [];
 const requestedUrls = [];
 const webSocketUrls = [];
+const networkFailures = [];
 
 try {
   const browserWebSocketUrl = await waitForDevToolsUrl(chrome, () => chromeOutput);
@@ -370,6 +371,9 @@ try {
   });
   cdp.on('Network.webSocketCreated', ({ url }) => {
     if (url) webSocketUrls.push(url);
+  });
+  cdp.on('Network.loadingFailed', ({ errorText, type, blockedReason }) => {
+    networkFailures.push({ errorText, type, blockedReason });
   });
 
   const loaded = cdp.once('Page.loadEventFired');
@@ -504,6 +508,9 @@ try {
       + `${routes.length} synthetic dashboard routes, and mobile layout`,
   );
 } catch (error) {
+  console.error('Browser exceptions:', JSON.stringify(browserExceptions, null, 2));
+  console.error('Requested URLs:', JSON.stringify(requestedUrls, null, 2));
+  console.error('Network failures:', JSON.stringify(networkFailures, null, 2));
   if (chromeOutput) {
     console.error('Chrome output (tail):\n', chromeOutput);
   }
