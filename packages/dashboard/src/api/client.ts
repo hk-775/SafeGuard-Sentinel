@@ -13,8 +13,16 @@ import type {
   GraphEdge,
 } from '../types';
 import { AppealStatus } from '../types';
+import { IS_PUBLIC_SITE } from '../lib/publicSite';
 
 async function request<T>(url: string): Promise<ApiResult<T>> {
+  if (IS_PUBLIC_SITE) {
+    return {
+      data: null,
+      error: { statusCode: 0, message: 'Synthetic public demo mode' },
+    };
+  }
+
   try {
     const response = await fetch(url);
     if (response.status >= 400) {

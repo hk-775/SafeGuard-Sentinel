@@ -20,6 +20,8 @@ All notable changes to SafeGuard Sentinel are documented here.
 ### Added
 
 - Community health files, release guidance, and dependency license checks.
+- A GitHub Pages workflow that publishes and browser-tests the canonical
+  landing, architecture, guided tour, and synthetic dashboard.
 
 ## 0.1.0
 

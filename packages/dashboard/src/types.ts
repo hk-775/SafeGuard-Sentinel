@@ -90,6 +90,7 @@ export interface ReconnectionState {
 
 export interface WebSocketManagerConfig {
   url: string;
+  disabled?: boolean;
   initialBackoffMs?: number;
   maxBackoffMs?: number;
 }

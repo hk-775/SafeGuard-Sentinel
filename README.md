@@ -1,5 +1,7 @@
 # SafeGuard Sentinel
 
+[View the public landing page and synthetic dashboard](https://hk-775.github.io/SafeGuard-Sentinel/)
+
 SafeGuard Sentinel is a customer-neutral, open reference implementation for
 privacy-preserving trust and safety workflows on AWS. It demonstrates how to
 correlate visual, textual, behavioral, and temporal risk signals; preserve
@@ -20,6 +22,8 @@ control of consequential actions.
 - Graduated safety prompts, temporary controls, evidence, appeals, and audit
   workflows
 - A React operations dashboard backed by clearly marked synthetic fixtures
+- A GitHub Pages publication of the canonical landing, architecture, and
+  synthetic dashboard routes
 - Editable Draw.io architecture source plus SVG and PNG exports
 - Automated checks that reject known source-brand terms, email addresses,
   precise coordinates, and non-documentation IPv4 addresses

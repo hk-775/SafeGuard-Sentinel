@@ -5,7 +5,7 @@ export const OnePagerPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="landing">
+    <div className="landing" data-testid="canonical-landing">
       <section className="landing-hero">
         <div className="landing-hero-inner">
           <span className="landing-badge">
@@ -20,12 +20,14 @@ export const OnePagerPage: React.FC = () => {
           <div className="landing-actions">
             <button
               className="landing-btn landing-btn-primary"
+              data-testid="architecture-link"
               onClick={() => navigate('/architecture')}
             >
               View Architecture
             </button>
             <button
               className="landing-btn landing-btn-accent"
+              data-testid="dashboard-link"
               onClick={() => navigate('/overview')}
             >
               Explore Synthetic Demo
